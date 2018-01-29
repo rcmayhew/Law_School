@@ -16,6 +16,7 @@ EmployedTotals = data_16.parse().Total
 Total_graduated = sum(GradTotals)
 Total_employed = sum(EmployedTotals)
 
+
 pay_total_indices = [data_16.parse().columns.get_loc("26-50"),
                      data_16.parse().columns.get_loc("51-100"),
                      data_16.parse().columns.get_loc("101-250"),
@@ -28,15 +29,15 @@ for index in pay_total_indices:
     pay_total_value.append(sum(data_16.parse().ix[:, index]))
 pay_scale = ["26-50", "51-100", "101-250", "251-500",
              "501 Plus", "Unknown"]
-
-print(pay_total_value)
-
+total_reported = sum(pay_total_value)
+print(total_reported)
 
 xs = [i + 0.1 for i, _ in enumerate(pay_scale)]
 plt.bar(xs, pay_total_value)
 plt.ylabel("# of Employed Lawyers")
-plt.xlabel("Pay Scales")
-plt.title("Distribution of Lawyer Pay")
+plt.xlabel("Pay in Thousands of Dollars a Year")
+plt.title("Distribution of Reported Lawyer Pay")
 plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
 
 plt.show()
+
