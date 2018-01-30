@@ -36,8 +36,8 @@ total_reported = sum(pay_total_value)
 print(total_reported)
 
 xs = [i for i, _ in enumerate(pay_scale)]
-plt.figure(1, figsize=(12, 12))
-plt.subplot(211)
+plt.figure(1, figsize=(15, 5))
+plt.subplot(1, 2, 1)
 plt.bar(xs, pay_total_value)
 plt.ylabel("# of Lawyers")
 plt.xlabel("Employment Status")
@@ -45,7 +45,7 @@ plt.title("Distribution of Reported Lawyer Pay")
 plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
 plt.autoscale(True)
 
-plt.subplot(212)
+plt.subplot(1, 2, 2)
 xss = [i for i, _ in enumerate(second_args)]
 plt.bar(xss, second_list)
 plt.xticks([i for i, _ in enumerate(second_args)], second_args)
@@ -56,5 +56,3 @@ plt.show()
 obviously there is a difference between the reported data and the
 actual salary data. Nearly three quarters didn't report income data
 """
-
-
