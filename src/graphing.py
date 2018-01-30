@@ -1,6 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
-from os import path
+import os
+import pathlib
 
 
 def law_graph(data, name):
@@ -27,7 +28,7 @@ def law_graph(data, name):
     second_list = [total_employed, total_graduated - total_employed]
     second_args = ["Total Employed", "Total Unemployed"]
 
-    plt.figure(1, figsize=(15, 5))
+    fig = plt.figure(1, figsize=(15, 5))
     plt.suptitle(name)
 
     plt.subplot(1, 2, 1)
@@ -46,8 +47,11 @@ def law_graph(data, name):
     plt.xlabel("Employment status")
     plt.title("Employed Lawyers")
     plt.xticks([i for i, _ in enumerate(second_args)], second_args)
-    dic = "Graph"
+
+    dic = "Graph/"
     suf = ".png"
-    file = "%s%s" % (name, suf)
-    plt.savefig(path.join(dic, file))
+    file = "%s%s%s" % (dic, name, suf)
+    pathlib.Path(dic).mkdir(parents=True, exist_ok=True)
+    # os.makedirs(os.path.dirname(dic), exist_ok=True)
+    fig.savefig(file)
     plt.show()
