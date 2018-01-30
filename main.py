@@ -41,3 +41,9 @@ plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
 
 plt.show()
 
+"""
+obviously there is a difference between the reported data and the
+actual salary data. Nearly three quarters didn't report income data
+"""
+
+
