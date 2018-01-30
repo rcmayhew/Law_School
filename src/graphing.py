@@ -50,4 +50,4 @@ def law_graph(data, name):
     suf = ".png"
     file = "%s%s" % (name, suf)
     plt.savefig(path.join(dic, file))
-    # plt.show()
+    plt.show()
