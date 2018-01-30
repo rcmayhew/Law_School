@@ -27,17 +27,28 @@ pay_total_indices = [data_16.parse().columns.get_loc("26-50"),
 pay_total_value = []
 for index in pay_total_indices:
     pay_total_value.append(sum(data_16.parse().ix[:, index]))
-pay_scale = ["26-50", "51-100", "101-250", "251-500",
-             "501 Plus", "Unknown"]
+
+second_list = [Total_employed, Total_graduated - Total_employed]
+second_args = ["Total Employed", "Total Unemployed"]
+pay_scale = ["26K-50K", "51K-100K", "101K-250K", "251K-500K",
+             "501K Plus", "Unknown"]
 total_reported = sum(pay_total_value)
 print(total_reported)
 
-xs = [i + 0.1 for i, _ in enumerate(pay_scale)]
+xs = [i for i, _ in enumerate(pay_scale)]
+plt.figure(1, figsize=(12, 12))
+plt.subplot(211)
 plt.bar(xs, pay_total_value)
-plt.ylabel("# of Employed Lawyers")
-plt.xlabel("Pay in Thousands of Dollars a Year")
+plt.ylabel("# of Lawyers")
+plt.xlabel("Employment Status")
 plt.title("Distribution of Reported Lawyer Pay")
 plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
+plt.autoscale(True)
+
+plt.subplot(212)
+xss = [i for i, _ in enumerate(second_args)]
+plt.bar(xss, second_list)
+plt.xticks([i for i, _ in enumerate(second_args)], second_args)
 
 plt.show()
 
