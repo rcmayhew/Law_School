@@ -101,4 +101,4 @@ ENV/
 .mypy_cache/
 
 # created graphs
-/graphs
+/Graphs/*
