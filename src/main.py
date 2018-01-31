@@ -4,7 +4,6 @@ the employment opportunities of the graduates.
 """
 
 import pandas as pd
-# from matplotlib import pyplot as plt
 import graphing as gr
 
 data_16_file = 'Data\EmploymentSummary-2016.xlsx'
