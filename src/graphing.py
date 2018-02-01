@@ -83,6 +83,7 @@ def law_graph(data, name):
 
 
 def FTLT_graph(data, name):
+    name = "FTLT_%s" % (name)
     # lists for each feature
     gradtotals = data.parse().TotalGraduatesNumber
     index = data.parse().columns.get_loc("Total-FTLT")
@@ -130,7 +131,7 @@ def FTLT_graph(data, name):
 
     """starts the figure for both graphs"""
     fig = plt.figure(1, figsize=(20, 5))
-    plt.suptitle("FTLT %s" % (name))
+    plt.suptitle(name)
     """this is the pay bucket graph"""
     plt.subplot(1, 2, 1)
     xs = [i for i, _ in enumerate(pay_scale)]

@@ -5,13 +5,16 @@ the employment opportunities of the graduates.
 
 import pandas as pd
 import graphing as gr
+import data_check as dc
 
 data_17_file = 'Data\EmploymentSummary-2017.xlsx'
 data_17 = pd.ExcelFile(data_17_file)
-gr.FTLT_graph(data_17, "data_2017")
+dc.checkdoc(data_17)
+# gr.FTLT_graph(data_17, "data_2017")
+# gr.law_graph(data_17, "data_2017")
 
-data_16_file = 'Data\EmploymentSummary-2016.xlsx'
-data_16 = pd.ExcelFile(data_16_file)
+# data_16_file = 'Data\EmploymentSummary-2016.xlsx'
+# data_16 = pd.ExcelFile(data_16_file)
 # gr.law_graph(data_16, "data_2016")
 
 """
