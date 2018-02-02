@@ -89,10 +89,10 @@ def checkdoc(data):
             third_run = checkdata(data, j, y)
             add_index(third_run, list_of_errors)
 
-        # 147-150 check -105 step 5
+        # 147-150 check -85 step 5
         for k in range(147, 152):
             # print(k)
-            fourth_run = checkdata(data, k, y, 105, 5, verbose=True)
+            fourth_run = checkdata(data, k, y, 85, 5, verbose=False)
             add_index(fourth_run, list_of_errors)
 
         # 151 needs to be checked again -5 step 1
