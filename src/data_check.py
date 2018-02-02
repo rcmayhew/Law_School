@@ -5,7 +5,8 @@ the accuracy of the data.
 
 
 def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
-              altjump=False, altskip=0, altstart=0, altend=0):
+              altjump=False, altskip=1, altstart=0, altend=0,
+              verbose=False):
     """
     Often, the data is grouped in fives, the fifth being the total
     of the prior four. this script will check the 4 prior by default
@@ -24,30 +25,39 @@ def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
     :return: either true if no problem
              or a tuple of the index if problem
     """
+
     sumcheck = 0
-    # data.parse().ix[:, index]
     goalcheck = data.parse().ix[row, goal]
-    storeskip = checkskip
-    for i in range(goal - checkrange, goal, checkskip):
-        # print(data.parse().ix[row, i])
-        print(i)
-        sumcheck += data.parse().ix[row, i]
-        if altjump and i + checkskip > altstart:
-            checkskip = altskip
-            i = altstart - checkskip
-        if altjump and i == altend:
-            checkskip = storeskip
+    if not altjump:
+        altstart = goal
+
+    for i in range(goal - checkrange, altstart, checkskip):
+        datum = data.parse().ix[row, i]
+        if verbose:
+            print("+ %s: (%s, %s)" % (datum, row + 2, data.parse().columns[i]))
+        sumcheck += datum
+
+    if altjump:
+        for j in range(altstart, altend, altskip):
+            sumcheck += data.parse().ix[row, j]
+
+        for k in range(altend, goal, checkskip):
+            sumcheck += data.parse().ix[row, k]
+
+    if verbose:
+        print("= %s, Actual: %s" % (sumcheck, goalcheck))
+        print("\n")
     if sumcheck == goalcheck:
         return True
     else:
-        return row, goal
+        return [row + 2, goal + 1, sumcheck]
 
 
-def add_index(input, hold):
-    if input:
+def add_index(inputs, hold):
+    if isinstance(inputs, bool):
         return
     else:
-        hold.append(input)
+        hold.append(inputs)
 
 
 def checkdoc(data):
@@ -57,18 +67,37 @@ def checkdoc(data):
     :param data: the dataframe that contains the document
     :return: return a list of all the problem indices
     """
+
+
+    """
+    DOES NOT COUNT THE FUNDED!!!! 
+    """
     list_of_errors = []
     for y in range(len(data.parse().SchoolName)):
-        # is 5/10/15/20/25/30/ check -5 step 1
-        """
-        for i in range(5, 5, 30):
+
+        # is 5-30 check -5 step 1
+        for i in range(5, 30, 5):
             first_run = checkdata(data, i, y)
             add_index(first_run, list_of_errors)
-        """
+
         # 5/10/15/20/25/30/32/33/34/35 to prove 36: check -16 step 5, check -4 step 1
-        second_run = checkdata(data, 36, y, 31, 5, True, 1, 32, 36)
-        # print(second_run)
+        second_run = checkdata(data, 36, y, 31, 5, True, 1, 31, 36)
+        add_index(second_run, list_of_errors)
+
         # 41-151 check -5 step 1
-        # 147/148/149/150 check -105 step 5
-        # 150 needs to be checked again -5 step 1
-    print(list_of_errors)
+        for j in range(41, 5, 151):
+            third_run = checkdata(data, j, y)
+            add_index(third_run, list_of_errors)
+
+        # 147-150 check -105 step 5
+        for k in range(147, 152):
+            # print(k)
+            fourth_run = checkdata(data, k, y, 105, 5, verbose=True)
+            add_index(fourth_run, list_of_errors)
+
+        # 151 needs to be checked again -5 step 1
+        fifth_run = checkdata(data, 151, y)
+        add_index(fifth_run, list_of_errors)
+
+        print(list_of_errors)
+    return list_of_errors
