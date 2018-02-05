@@ -99,5 +99,5 @@ def checkdoc(data):
         fifth_run = checkdata(data, 151, y)
         add_index(fifth_run, list_of_errors)
 
-        print(list_of_errors)
+        # print(list_of_errors)
     return list_of_errors
