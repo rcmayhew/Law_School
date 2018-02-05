@@ -9,7 +9,8 @@ import data_check as dc
 
 data_17_file = 'Data\EmploymentSummary-2017.xlsx'
 data_17 = pd.ExcelFile(data_17_file)
-ERROR = dc.checkdoc(data_17)
+aveBySchool = dc.genAve(data_17)
+# ERROR = dc.checkdoc(data_17)
 # gr.FTLT_graph(data_17, "data_2017")
 # gr.law_graph(data_17, "data_2017")
 

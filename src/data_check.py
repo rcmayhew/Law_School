@@ -6,7 +6,7 @@ the accuracy of the data.
 
 def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
               altjump=False, altskip=1, altstart=0, altend=0,
-              verbose=False):
+              verbose=False, actual=True):
     """
     Often, the data is grouped in fives, the fifth being the total
     of the prior four. this script will check the 4 prior by default
@@ -22,6 +22,10 @@ def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
     :param altstart: when the alt step size starts
     :param altend: when the alt step size ends. altend - altstart
                     must be a multiple of altskip
+    :param verbose: labels if you want a print out while you add the
+                    columns
+    :param actual: choose whether to compare the total to a column or
+                    choose to simply display the total
     :return: either true if no problem
              or a tuple of the index if problem
     """
@@ -45,8 +49,14 @@ def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
             sumcheck += data.parse().ix[row, k]
 
     if verbose:
-        print("= %s, Actual: %s" % (sumcheck, goalcheck))
-        print("\n")
+        if actual:
+            print("= %s, Actual: %s" % (sumcheck, goalcheck))
+            print("\n")
+        else:
+            print("= %s" % sumcheck)
+            print("\n")
+    if not actual:
+        return sumcheck
     if sumcheck == goalcheck:
         return True
     else:
@@ -101,3 +111,53 @@ def checkdoc(data):
 
         # print(list_of_errors)
     return list_of_errors
+
+
+def explore(data):
+    print("Total difference between job income and job category by school")
+    printout = False
+    total_diff = 0
+    for y in range(len(data.parse().SchoolName)):
+        # goal is 107, start is 66, check -41 step 5
+        income = checkdata(data, 107, y, 41, 5, verbose=printout, actual=False)
+        # goal is 147, start is 111, check -36 step 5
+        category = checkdata(data, 147, y, 36, 5, verbose=printout, actual=False)
+        difference = income - category
+        total_diff += difference
+        # print("%s: \t %s" % (data.parse().SchoolName[y], differnce))
+        print("%s: %s" % (difference, total_diff))
+
+
+def mean(a, b):
+    return (a + b)/2
+
+
+def averagepay(data, row, cols):
+    incomeTotal = 0
+    hired = 0
+    pay = []
+    for index in col:
+        pay.append(data.parse().ix[row, index])
+    hired = sum(pay)
+    incometotal = pay[0]*mean(2, 10) + pay[1]*mean(11, 25)
+    + pay[2]*mean(26, 50) + pay[3]*mean(51, 100)
+    + pay[4]*mean(101, 250) + pay[5]*mean(251, 500)
+    + pay[6]*mean(501, 1000)
+    return incometotal/hired
+
+
+def incomeAve(data):
+
+    cols = [71,  # location of the total of 2-10K a year
+            76,  # location of the total of 11-25K a year
+            data.parse().columns.get_loc("26-50"),
+            data.parse().columns.get_loc("51-100"),
+            data.parse().columns.get_loc("101-250"),
+            data.parse().columns.get_loc("251-500"),
+            data.parse().columns.get_loc("501-PLUS")]
+
+    averagepays = []
+    for y in range(len(data.parse().SchoolName)):
+        averagepays.append(averagepay(data, y, cols))
+
+    return zip(data.parse().SchoolNames, averagepays)
