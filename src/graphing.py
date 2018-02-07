@@ -25,7 +25,7 @@ def law_graph(data, name):
     total_unknown = sum(unknowntotals)
 
     """lists the indices of the columns that contains the proper info"""
-    pay_total_indices = [data.parse().columns.get_loc("Solo"),
+    firm_total_indices = [data.parse().columns.get_loc("Solo"),
                          71,    # location of the total of 2-10K a year
                          76,    # location of the total of 11-25K a year
                          data.parse().columns.get_loc("26-50"),
@@ -35,10 +35,10 @@ def law_graph(data, name):
                          data.parse().columns.get_loc("501-PLUS"),
                          data.parse().columns.get_loc("Unknown")]
     """This is the list of the number of lawyers in each bucket"""
-    pay_total_value = []
-    for index in pay_total_indices:
-        pay_total_value.append(sum(data.parse().ix[:, index]))
-    pay_scale = ["Solo", "2K-10K", "11K-25K", "26K-50K", "51K-100K",
+    firm_total_value = []
+    for index in firm_total_indices:
+        firm_total_value.append(sum(data.parse().ix[:, index]))
+    firm_size = ["Solo", "2K-10K", "11K-25K", "26K-50K", "51K-100K",
                  "101K-250K", "251K-500K", "501K Plus", "Unknown"]
 
     """
@@ -46,24 +46,24 @@ def law_graph(data, name):
     there is a discrepancy between the number of report salaries and 
     the reported employment numbers.
     """
-    total_known = sum(pay_total_value)
-    second_list = [total_employed, total_known, total_graduated
+    total_known = sum(firm_total_value)
+    second_list = [total_employed, total_in_firm, total_graduated
                    - total_employed - total_unknown, total_school,
                    total_unknown]
-    second_args = ["Total Employed", "Known Pay", "Total Unemployed",
+    second_args = ["Total Employed", "Law Firm", "Total Unemployed",
                    "Still in School", "Unknown"]
 
     """starts the figure for both graphs"""
     fig = plt.figure(1, figsize=(20, 5))
     plt.suptitle(name)
-    """this is the pay bucket graph"""
+    """this is the firm size graph"""
     plt.subplot(1, 2, 1)
-    xs = [i for i, _ in enumerate(pay_scale)]
-    plt.bar(xs, pay_total_value)
+    xs = [i for i, _ in enumerate(firm_size)]
+    plt.bar(xs, firm_total_value)
     plt.ylabel("# of Lawyers")
-    plt.xlabel("Employment pay")
-    plt.title("Distribution of Reported Lawyer Pay")
-    plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
+    plt.xlabel("Firm Size")
+    plt.title("Distribution of law firm size")
+    plt.xticks([i for i, _ in enumerate(firm_size)], firm_size)
     plt.autoscale(True)
     """this is the employed graph"""
     plt.subplot(1, 2, 2)
@@ -100,7 +100,7 @@ def FTLT_graph(data, name):
     total_bar = sum(bartotals)
 
     """lists the indices of the columns that contains the proper info"""
-    pay_total_indices = [data.parse().columns.get_loc("Solo-FTLT"),
+    firm_total_indices = [data.parse().columns.get_loc("Solo-FTLT"),
                          data.parse().columns.get_loc("2-10-FTLT"),
                          data.parse().columns.get_loc("11-25-FTLT"),
                          data.parse().columns.get_loc("26-50-FTLT"),
@@ -110,10 +110,10 @@ def FTLT_graph(data, name):
                          data.parse().columns.get_loc("501-FTLT"),
                          data.parse().columns.get_loc("Unknown-FTLT")]
     """This is the list of the number of lawyers in each bucket"""
-    pay_total_value = []
-    for index in pay_total_indices:
-        pay_total_value.append(sum(data.parse().ix[:, index]))
-    pay_scale = ["Solo", "2K-10K", "11K-25K", "26K-50K", "51K-100K",
+    firm_total_value = []
+    for index in firm_total_indices:
+        firm_total_value.append(sum(data.parse().ix[:, index]))
+    firm_scale = ["Solo", "2K-10K", "11K-25K", "26K-50K", "51K-100K",
                  "101K-250K", "251K-500K", "501K Plus", "Unknown"]
 
     """
@@ -123,23 +123,23 @@ def FTLT_graph(data, name):
     """
 
     non_bar = total_employed - total_bar
-    # pay_total_value[1] -= non_bar
+
 
     total_known = sum(pay_total_value)
     second_list = [total_employed, total_known, non_bar, total_graduated]
-    second_args = ["Total Employed", "Known Pay", "Total Working not as lawyer", "Total Graduated"]
+    second_args = ["Total Employed", "Law Firm", "Total Working not as lawyer", "Total Graduated"]
 
     """starts the figure for both graphs"""
     fig = plt.figure(1, figsize=(20, 5))
     plt.suptitle(name)
-    """this is the pay bucket graph"""
+    """this is the firm size graph"""
     plt.subplot(1, 2, 1)
-    xs = [i for i, _ in enumerate(pay_scale)]
-    plt.bar(xs, pay_total_value)
+    xs = [i for i, _ in enumerate(firm_scale)]
+    plt.bar(xs, firm_total_value)
     plt.ylabel("# of Lawyers")
-    plt.xlabel("Employment pay")
-    plt.title("Distribution of Reported Lawyer Pay")
-    plt.xticks([i for i, _ in enumerate(pay_scale)], pay_scale)
+    plt.xlabel("Firm size")
+    plt.title("Distribution of firm size")
+    plt.xticks([i for i, _ in enumerate(firm_scale)], firm_scale)
     plt.autoscale(True)
     """this is the employed graph"""
     plt.subplot(1, 2, 2)

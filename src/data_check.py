@@ -3,6 +3,7 @@ Sometimes the data is bad so this is for some small scripts to check
 the accuracy of the data.
 """
 
+import pandas as pd
 
 def checkdata(data, goal, row=1, checkrange=4, checkskip=1,
               altjump=False, altskip=1, altstart=0, altend=0,
@@ -133,31 +134,33 @@ def mean(a, b):
 
 
 def averagepay(data, row, cols):
-    incomeTotal = 0
-    hired = 0
     pay = []
-    for index in col:
+    for index in cols:
         pay.append(data.parse().ix[row, index])
     hired = sum(pay)
+    if not hired:
+        hired = True
     incometotal = pay[0]*mean(2, 10) + pay[1]*mean(11, 25)
     + pay[2]*mean(26, 50) + pay[3]*mean(51, 100)
     + pay[4]*mean(101, 250) + pay[5]*mean(251, 500)
     + pay[6]*mean(501, 1000)
-    return incometotal/hired
+    pay = incometotal*1000/hired
+    print(pay)
+    return pay
 
-
-def incomeAve(data):
-
-    cols = [71,  # location of the total of 2-10K a year
-            76,  # location of the total of 11-25K a year
-            data.parse().columns.get_loc("26-50"),
-            data.parse().columns.get_loc("51-100"),
-            data.parse().columns.get_loc("101-250"),
-            data.parse().columns.get_loc("251-500"),
-            data.parse().columns.get_loc("501-PLUS")]
+def incomeave(data):
+    cols = [67,  # location of the total of 2-10K a year
+            72,  # location of the total of 11-25K a year
+            data.parse().columns.get_loc("26-50-FTLT"),
+            data.parse().columns.get_loc("51-100-FTLT"),
+            data.parse().columns.get_loc("101-250-FTLT"),
+            data.parse().columns.get_loc("251-500-FTLT"),
+            data.parse().columns.get_loc("501-FTLT")]
 
     averagepays = []
     for y in range(len(data.parse().SchoolName)):
         averagepays.append(averagepay(data, y, cols))
 
-    return zip(data.parse().SchoolNames, averagepays)
+    return zip(data.parse().SchoolName, averagepays)
+
+
